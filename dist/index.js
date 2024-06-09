@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const socket_io_1 = require("socket.io");
 const cors_1 = __importDefault(require("cors"));
 const http_1 = __importDefault(require("http"));
+const RoomHandler_1 = __importDefault(require("./handlers/RoomHandler"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 const server = http_1.default.createServer(app);
@@ -18,10 +19,11 @@ const io = new socket_io_1.Server(server, {
 });
 io.on("connection", (socket) => {
     console.log("New User is connected");
-    io.on("disconnect", (socket) => {
+    (0, RoomHandler_1.default)(socket);
+    socket.on("disconnect", () => {
         console.log("The user is disconnect");
     });
 });
 server.listen(5000, () => {
-    console.log("The server is start");
+    console.log("The server is start at the server 5000");
 });
